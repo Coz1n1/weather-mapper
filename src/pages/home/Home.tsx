@@ -1,73 +1,67 @@
-import React from "react";
-import { Parallax, ParallaxLayer } from "@react-spring/parallax";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 export const Home = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const blob: any = document.getElementById("blob");
+
+    document.body.onpointermove = (e) => {
+      const { clientX, clientY } = e;
+      blob.animate(
+        {
+          left: `${clientX}px`,
+          top: `${clientY}px`,
+        },
+        { duration: 6000, fill: "forwards" }
+      );
+    };
+  }, []);
+
+  const handleClick = () => {
+    navigate("/weatherapp");
+  };
+
   return (
-    <div>
-      <Parallax
-        pages={2}
-        style={{ top: "0", left: "0" }}
-        className="block relative z-10"
-      >
-        <ParallaxLayer offset={0} speed={0.1}>
-          <div className="w-screen h-4/5 relative">
-            <img
-              src={require("../../assets/layer1.png")}
-              alt=""
-              className="absolute bottom-0"
-            />
+    <div className="bg-zinc-800">
+      <div
+        className="h-1/2 absolute bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% aspect-square rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 blur-3xl"
+        id="blob"
+      ></div>
+      <div className="absolute h-96 aspect-square bg-none border-solid border-2 border-emerald-600 top-10 left-20"></div>
+      <div className="absolute h-80 aspect-square rounded-full bg-indigo-500 top-24 left-2/3 border-0"></div>
+      {/* <div className="h-screen w-screen absolute z-2 backdrop-blur-3xl"></div> */}
+      <div className="flex items-center justify-center h-screen relative w-screen">
+        <div className="flex flex-col items-center justify-center h-full absolute w-full">
+          <div className="flex justify-start w-3/5">
+            <span className="text-white text-9xl font-bold z-10">
+              WeatherMapper.
+            </span>
           </div>
-        </ParallaxLayer>
-        <ParallaxLayer offset={0} speed={0.3}>
-          <div className="flex justify-center items-center w-screen h-4/5">
-            <div className="flex flex-col justify-center items-center w-auto">
-              <span className="text-3xl font-bold text-blue-700">
-                WeatherMapper
-              </span>
-              <span className="text-lg">lorem ipsum</span>
-            </div>
+          <div className="flex items-center justify-center">
+            <span className="text-white text-9xl font-bold z-10">
+              Check Everything
+            </span>
+            <button
+              className="text-3xl h-20 w-48 bg-emerald-500 rounded-full animate-bounce"
+              onClick={handleClick}
+            >
+              Get Started
+            </button>
           </div>
-        </ParallaxLayer>
-        <ParallaxLayer offset={0} speed={0.2}>
-          <div className="w-screen h-4/5 relative">
-            <img
-              src={require("../../assets/onmountain_layer.png")}
-              alt=""
-              className="absolute bottom-0"
-            />
+          <div className="flex justify-end w-3/5">
+            <span className=" text-white text-9xl font-bold z-10">With Us</span>
           </div>
-        </ParallaxLayer>
-        <ParallaxLayer offset={0} speed={0.6}>
-          <div className="w-screen h-4/5 relative">
-            <img
-              src={require("../../assets/layer_mountain.png")}
-              alt=""
-              className="absolute bottom-0"
-            />
-          </div>
-        </ParallaxLayer>
-        <ParallaxLayer offset={0} speed={0.4}>
-          <div className="w-screen h-4/5 relative">
-            <img
-              src={require("../../assets/layer_trees.png")}
-              alt=""
-              className="absolute bottom-0 right-0"
-            />
-          </div>
-        </ParallaxLayer>
-        <ParallaxLayer offset={1} speed={2}>
-          <div className="h-screen text-lg bg-slate-400">
-            <div className="w-96 pt-20">
-              Ipsum has been the industry's standard dummy text ever since the
-              1500s, when an unknown printer took a galley of type and scrambled
-              it to make a type specimen book. It has survived not only five
-              centuries, but also the leap into electronic typesetting,
-              remaining essentially unchanged. It was popularised in the 1960s
-              with the release of Letraset sheets containing Lorem Ipsum
-              passages, and more recently with deskto
-            </div>
-          </div>
-        </ParallaxLayer>
-      </Parallax>
+        </div>
+        <div className="h-3/5 bg-white w-2/5 rounded-3xl relative">
+          <img
+            src={require("../../assets/layer1.jpg")}
+            alt=""
+            className="absolute rounded-3xl h-full"
+          />
+        </div>
+      </div>
     </div>
   );
 };

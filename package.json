@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mantine/hooks": "^6.0.17",
+    "@phosphor-icons/react": "^2.0.10",
     "@react-spring/parallax": "^9.7.3",
     "@react-spring/web": "^9.7.3",
     "@testing-library/jest-dom": "^5.14.1",
@@ -12,6 +14,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.2",
