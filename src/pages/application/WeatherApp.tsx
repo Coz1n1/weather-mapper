@@ -1,28 +1,66 @@
-import React from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
+import { optionType } from "../../types";
+import Axios from "axios";
+import { Search } from "../../components/Search";
 
 export const WeatherApp = () => {
+  const [search, setSearch] = useState<string>("");
+  const [city, setCity] = useState<optionType | null>(null);
+  const [options, setOptions] = useState<[]>([]);
+
+  const getOptions = (value: string) => {
+    Axios.get(
+      `http://api.openweathermap.org/geo/1.0/direct?q=${value.trim()}&limit=5&appid=${
+        process.env.REACT_APP_API_KEY
+      }`
+    ).then((res) => {
+      const result = res.data;
+      setOptions(result);
+    });
+  };
+
+  const getForecast = (e: optionType) => {
+    Axios.get(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${e.lat}&lon=${e.lon}&appid=${process.env.REACT_APP_API_KEY}`
+    ).then((res) => {
+      console.log(res.data);
+    });
+  };
+
+  const handleSubmit = () => {
+    if (!city) return;
+
+    getForecast(city);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
+    setSearch(value);
+    if (value === "") return;
+    getOptions(value);
+  };
+
+  const handleClick = (e: optionType) => {
+    console.log(e.name + " " + e.lon);
+    setCity(e);
+  };
+
+  useEffect(() => {
+    if (city) {
+      setSearch(city.name);
+      setOptions([]);
+    }
+  }, [city]);
+
   return (
     <div>
-      <div className="flex items-center justify-center bg-zinc-800 h-screen w-screen">
-        <div className="flex flex-col h-1/2 w-screen md:w-1/2">
-          <span className="text-3xl text-amber-300 text-center font-bold">
-            Welcome,
-          </span>
-          <span className="text-2xl text-gray-300 text-center">
-            search for the city you want and check the weather
-          </span>
-          <div className="flex items-center justify-center mt-10 md:mt-4">
-            <input
-              placeholder="Enter city name..."
-              value={""}
-              className="px-4 py-2 w-9/12 md:w-full border-solid p-2 rounded-l-md border-2"
-            ></input>
-            <button className="px-4 py-2 border-2 rounded-r-md text-white hover:text-amber-300 hover:border-amber-300">
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
+      <Search
+        search={search}
+        options={options}
+        handleChange={handleChange}
+        handleClick={handleClick}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 };
