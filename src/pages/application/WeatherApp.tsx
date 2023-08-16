@@ -1,12 +1,14 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
-import { optionType } from "../../types";
+import { optionType, cityForecastType } from "../../types";
 import Axios from "axios";
 import { Search } from "../../components/Search";
+import { Forecast } from "../../components/Forecast";
 
 export const WeatherApp = () => {
   const [search, setSearch] = useState<string>("");
   const [city, setCity] = useState<optionType | null>(null);
   const [options, setOptions] = useState<[]>([]);
+  const [forecast, setForecast] = useState<cityForecastType | null>(null);
 
   const getOptions = (value: string) => {
     Axios.get(
@@ -23,10 +25,14 @@ export const WeatherApp = () => {
     Axios.get(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${e.lat}&lon=${e.lon}&appid=${process.env.REACT_APP_API_KEY}`
     ).then((res) => {
-      console.log(res.data);
+      const cityForecast = {
+        ...res.data.city,
+        list: res.data.list,
+      };
+      console.log(cityForecast);
+      setForecast(cityForecast);
     });
   };
-
   const handleSubmit = () => {
     if (!city) return;
 
@@ -53,7 +59,7 @@ export const WeatherApp = () => {
   }, [city]);
 
   return (
-    <div>
+    <div className="h-screen">
       <Search
         search={search}
         options={options}
@@ -61,6 +67,7 @@ export const WeatherApp = () => {
         handleClick={handleClick}
         handleSubmit={handleSubmit}
       />
+      <Forecast data={forecast} />
     </div>
   );
 };
