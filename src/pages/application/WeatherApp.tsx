@@ -59,7 +59,7 @@ export const WeatherApp = () => {
   }, [city]);
 
   return (
-    <div className="h-screen">
+    <div className="h-screen overflow-x-hidden">
       <Search
         search={search}
         options={options}
@@ -67,7 +67,11 @@ export const WeatherApp = () => {
         handleClick={handleClick}
         handleSubmit={handleSubmit}
       />
-      <Forecast data={forecast} />
+      {forecast ? (
+        <Forecast data={forecast} />
+      ) : (
+        <div className="bg-zinc-800 h-4/5"></div>
+      )}
     </div>
   );
 };
